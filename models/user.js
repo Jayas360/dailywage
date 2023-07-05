@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema( 
     {   
-        name:{
+        user_name:{
             type: String,
-            required: true
+            required:true
         },
-        mobile:{
+        email:{
             type: String,
             required: true,
             unique: true
@@ -19,5 +19,15 @@ const usersSchema = new mongoose.Schema(
     {timestamps: true}
 );
 
+
 const User = mongoose.model('User', usersSchema);
+// function renameCreatorField() {
+//     User.updateMany({}, { $rename: { "mobile" : "email" } }, { multi: true }, function(err, data) {
+//         if (!err) { 
+//             //success 
+//         }
+//     })
+// }
+
+// renameCreatorField(); 
 module.exports = User;
