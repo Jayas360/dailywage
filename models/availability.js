@@ -3,7 +3,7 @@ const personal = require("./personal");
 
 const availableSchema = new mongoose.Schema(
     {
-        personal: {
+        user: {
             type : mongoose.Schema.Types.ObjectId,
             ref : 'Personal',
             required : true

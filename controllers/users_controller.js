@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const Personal = require('../models/personal');
-const { Console, log } = require('console');
+const Availability = require("../models/availability");
 
 
 module.exports.users = async (req, res) => {
@@ -71,6 +71,50 @@ module.exports.personal = async (req, res) => {
     try {
         const data = await Personal.findOne({"email" : email});
         return res.status(200).send(data);
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+module.exports.makeAvailable = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await Availability.create({user : id});
+        return res.status(200).send("user is available");
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+    
+}
+
+module.exports.makeUnavailable = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await Availability.deleteOne({user : id});
+        return res.status(200).send("user is unavailable");
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+module.exports.availableList = async (req, res) => {
+    try {
+        const availableList = await Availability.find().populate('user');
+        return res.status(200).send(availableList);
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+module.exports.checkAvailability  = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await Availability.findOne({user : id});
+        let isAvailable = false;
+        if(user){
+            isAvailable = true;
+        }
+        return res.status(200).send({isAvailable});
     } catch (error) {
         return res.status(500).send(error);
     }
