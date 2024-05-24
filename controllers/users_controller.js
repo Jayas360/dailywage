@@ -2,7 +2,6 @@ const User = require('../models/user');
 const Personal = require('../models/personal');
 const Availability = require("../models/availability");
 
-
 module.exports.users = async (req, res) => {
     try {
         const usersList = await User.find();

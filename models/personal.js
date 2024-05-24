@@ -33,8 +33,8 @@ const personalSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    pin : {
-        type : Number,
+    city : {
+        type : String,
         required : true,
     },
     upload : {
