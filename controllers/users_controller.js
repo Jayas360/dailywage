@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const Personal = require('../models/personal');
 const Availability = require("../models/availability");
+const { log } = require('console');
+const {deleteFile}  = require('./helpers');
 
 module.exports.users = async (req, res) => {
     try {
@@ -53,10 +55,16 @@ module.exports.signIn = async (req, res) => {
 module.exports.createPersonal = async (req, res) => {
     const loc = req.file.destination.split("/")[1] + '/' + req.file.filename;
     const data = {...req.body, "upload" : loc};
-    // console.log(data);
 
     console.log(data);
     try {
+        const previousUpload = await Personal.find({"email" : data.email}, "upload")
+        const personalDetails = await Personal.deleteOne({"email" : data.email});
+        console.log(previousUpload);
+
+        //deleting previous profile image
+        await deleteFile(previousUpload[0].upload);
+
         await Personal.create(data);
         return res.status(201).send("Details added successfully...");
     } catch (error) {
